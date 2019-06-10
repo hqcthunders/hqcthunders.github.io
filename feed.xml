@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://hqcthunders.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hqcthunders.github.io/" rel="alternate" type="text/html" /><updated>2019-06-10T04:54:38+00:00</updated><id>https://hqcthunders.github.io/feed.xml</id><title type="html">CuongBeos</title><subtitle>Don't have anything !
+</subtitle><author><name>CuongBeos</name></author><entry><title type="html">Phân tích dữ liệu KDD99 (P.1)</title><link href="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html" rel="alternate" type="text/html" title="Phân tích dữ liệu KDD99 (P.1)" /><published>2019-06-07T00:00:00+00:00</published><updated>2019-06-07T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html">&lt;h2 id=&quot;1-giới-thiệu&quot;&gt;1. Giới thiệu&lt;/h2&gt;
+&lt;p&gt;KDD Cup 1999 là tập dữ liệu được sử dụng cho cuộc thi &lt;strong&gt;&lt;em&gt;The Third International Knowledge Discovery and Data Mining Tools&lt;/em&gt;&lt;/strong&gt;. Nó chứa một bộ dữ liệu tiêu chuẩn để được kiểm toán, bao gồm các loại tấn công, xâm nhập khác nhau được mô phỏng trong môi trường mạng quân sự.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-thành-phần-dữ-liệu&quot;&gt;2. Thành phần dữ liệu.&lt;/h2&gt;
+
+&lt;p&gt;Có tổng cộng 9 file trên trang chủ, tùy thuộc vào khả năng phần cứng mà bạn có thể lựa chọn chúng. Dưới đây, mình sẽ note lại ý nghĩa của từng file và file nào bạn nên tải:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/kddcup.names&quot;&gt;kddcup.names&lt;/a&gt; : Trong file này bao gồm 2 phần mà ta phải để ý đến:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    - Tên các class: các kiểu kết nối bình thường hoặc các kiểu tấn công, xâm nhập.
+    
+    - Tên của các feature.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data.gz&quot;&gt;kddcup.data.gz&lt;/a&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    - Đây là tập dữ liệu chính mà ta cần xử lý. Nó sẽ được sử dụng cho việc huấn luyện các mô hình ML/DL. Gồm 41 cột và hơn 4 triệu dòng. Với các bạn máy yếu thì mình khuyên không nên xử lý trên file này.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data_10_percent.gz&quot;&gt;kddcup.data_10_percent.gz&lt;/a&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Nó chỉ là 10% của file trên. Và đây là file mà các bạn nên sử dụng vì nó khá nhẹ, dễ dàng xử lý một cách nhanh chóng (về mặt thời gian).
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/kddcup.testdata.unlabeled.gz&quot;&gt;kddcup.testdata.unlabeled.gz&lt;/a&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Đã có train thì sẽ phải có test, thì đây là tập dữ liệu để kiểm tra xem model của bạn dự đoán như thế nào. Vì nó không hề có nhãn, nên ta không biết được là nó có chính xác không mà chỉ biết được nó sẽ được dự đoán ra những kiểu nào.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/kddcup.testdata.unlabeled_10_percent.gz&quot;&gt;kddcup.testdata.unlabeled_10_percent.gz&lt;/a&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Tương tự file trên.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://kdd.ics.uci.edu/databases/kddcup99/corrected.gz&quot;&gt;corrected.gz&lt;/a&gt; :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    Tập này là 10% của tập test, nhưng nó có thêm cột class, nghĩa là đã được đánh nhãn để các bạn có thê kiểm tra xem model của mình dự đoán chính xác bao nhiêu %, từ đó đưa ra kết luận, chỉnh sửa và thay đổi đối với model.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mô tả thông tin của từng feature. Những thông tin sẽ có ích trong việc lựa chọn cách thức xử lý dữ liệu của chúng ta.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Tên feature&lt;/th&gt;
+      &lt;th&gt;Mô tả&lt;/th&gt;
+      &lt;th&gt;Phân loại&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Duration&lt;/td&gt;
+      &lt;td&gt;Độ dài của một kết nối&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Protocol_type&lt;/td&gt;
+      &lt;td&gt;Các loại giao thức như: tcp, udp, …&lt;/td&gt;
+      &lt;td&gt;Discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Service&lt;/td&gt;
+      &lt;td&gt;Các dịch vụ mạng: http, telnet, …&lt;/td&gt;
+      &lt;td&gt;Discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;src_bytes&lt;/td&gt;
+      &lt;td&gt;Số byte data từ nguồn tới đích&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;dst_bytes&lt;/td&gt;
+      &lt;td&gt;Số byte data từ đích tới nguồn continuous&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;flag&lt;/td&gt;
+      &lt;td&gt;Trạng thái kết nối (bình thường hoặc lỗi)&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;land&lt;/td&gt;
+      &lt;td&gt;1 nếu kết nối được thiết lập từ một host/port tương tự &amp;lt;br &amp;gt; 0 cho các trường hợp còn lại&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;wrong_fragment&lt;/td&gt;
+      &lt;td&gt;Số fragment bị cảnh báo&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;urgent&lt;/td&gt;
+      &lt;td&gt;Số gói tin urgent&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;hot&lt;/td&gt;
+      &lt;td&gt;Số lượng chỉ số “hot”&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_failed_logins&lt;/td&gt;
+      &lt;td&gt;Số kết nối thất bại&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;logged_in&lt;/td&gt;
+      &lt;td&gt;1 nếu đăng nhập thành công &lt;br /&gt; 0 các trường hợp còn lại&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_compromised&lt;/td&gt;
+      &lt;td&gt;Số lượng tình huống bị xâm phạm&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;root_shell&lt;/td&gt;
+      &lt;td&gt;1 nếu thu được roo shell &amp;lt;br &amp;gt; 0 các trường hợp còn lại&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;su_attempted&lt;/td&gt;
+      &lt;td&gt;1 nếu “su root” được thực hiện &lt;br /&gt; 0 cho các trường hợp còn lại&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_root&lt;/td&gt;
+      &lt;td&gt;Số lượng truy cập root&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_file_creations&lt;/td&gt;
+      &lt;td&gt;Số lượng tập tin được tạo ra&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_shells&lt;/td&gt;
+      &lt;td&gt;Số lượng shell&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_access_files&lt;/td&gt;
+      &lt;td&gt;Số các thao tác kiểm soát truy cập tệp tin&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;num_outbound_cmds&lt;/td&gt;
+      &lt;td&gt;Số lượng các lệnh outbound trong một phiên ftp&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;is_hot_login&lt;/td&gt;
+      &lt;td&gt;1 nếu thông tin đăng nhập thuộc danh sách “hot”. &lt;br /&gt;0 cho các trường hợp còn lại&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;is_guest_login&lt;/td&gt;
+      &lt;td&gt;1 nếu thông tin đăng nhập là khách &lt;br /&gt; 0 cho các trường hợp khác&lt;/td&gt;
+      &lt;td&gt;discrete&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;count&lt;/td&gt;
+      &lt;td&gt;Số lượng kết nối tới cùng một host cách kết nối hiện tại 2s&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;serror_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối có lỗi SYN&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;rerror_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối có lỗi “REJ”&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;same_srv_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối đến cùng dịch vụ.&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;diff_srv_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối tới các dịch vụ khác.&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;srv_count&lt;/td&gt;
+      &lt;td&gt;Số lượng các kết nối tới cùng 1 dịch vụ so với kết nối hiện tại 2s&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;srv_serror_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối dịch vụ lỗi “SYN”&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;srv_rerror_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối dịch vụ lỗi “REJ”&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;srv_diff_host_rate&lt;/td&gt;
+      &lt;td&gt;% các kết nối tới các host khác.&lt;/td&gt;
+      &lt;td&gt;continuous&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;3-tạo-môi-trường-để-xử-lý-dữ-liệu&quot;&gt;3. Tạo môi trường để xử lý dữ liệu.&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ngôn ngữ sử dụng Python 3.x&lt;/li&gt;
+  &lt;li&gt;Thư viện sử dụng: Numpy, Pandas, Jupyter Notebook.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lý do mà mình lựa chọn Python 3.x bởi vì nó là một ngôn ngữ dễ sử dụng, có nhiều module hỗ trợ trong nhiều lĩnh vực, đặc biệt là khoa học phân tích dữ liệu.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Numpy&lt;/em&gt;&lt;/strong&gt; là một thư viện xử lý số học, trong bài này, mình sẽ xử dụng nó để tính toán Z-score (ý nghĩa mình sẽ giới thiệu trong mục tiếp theo).&lt;/p&gt;
+
+&lt;p&gt;Tiếp theo là &lt;strong&gt;&lt;em&gt;Pandas&lt;/em&gt;&lt;/strong&gt;, đây là một thư viện hỗ trợ rất mạnh cho việc xử lý, thể hiện dữ liệu ở dạng bảng (như exel), giúp cho việc phân tính trở nên tường mình, dễ nhìn hơn.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Jupyter Notebook&lt;/em&gt;&lt;/strong&gt;. Đây là một công cụ rất mạnh cho việc tạo môi trường Python phục vụ việc nghiên cứu. Nó được chạy trên nền Web, bạn có thể thực hiện các dòng lệnh 1 và biểu diễn chúng mà không cần compile cả file. Nó tương tự như việc bạn chạy lệnh python trên Terminal, tuy nhiên với Jupyter, nó sẽ lưu lại các câu lệnh, kết quả mà bạn làm, giúp cho việc tiếp tục công việc ở đợt sau thuận tiện hơn.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Khi làm việc với Python, bạn nêu tạo một môi trường ảo được gọi là &lt;strong&gt;Virtualenv&lt;/strong&gt; được hỗ trợ bởi python, sau khi truy cập vào môi trường ảo rồi thì mới cài đặt các module liên quan. Mỗi project thì nên sử dụng một Virtualenv để tránh việc xung đột giữa các phiên bản, đồng thời thử nghiệm được phiên bản mới của các module mà không ảnh hưởng đến phiên bản chính. Nên tập thói quen tạo ra một Virtualenv khi thực hiện các Project không liên quan tới nhau.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-thể-hiện-dữ-liệu-với-pandas&quot;&gt;4. Thể hiện dữ liệu với pandas.&lt;/h2&gt;
+&lt;p&gt;Sau khi đã cài đặt môi trường cho Python xong, ta sẽ khởi động jupyter notebook bằng terminal và truy cập nó trên web.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;jupyter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lab&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Bạn có thể thay đổi port truy cập cho nó bằng cách thêm &lt;strong&gt;–port&lt;/strong&gt; và thêm số port muốn truy cập sau đó.&lt;/p&gt;
+
+&lt;p&gt;Import thư viện pandas và xem thử nó được mô tả như nào nhé:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/DjJGe9o.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;À quên chưa nhắc, nếu các bạn có lỡ mở file data lên bằng notepad (trên windows) hay text  editor (trên linux) thì khả năng treo máy khá cao, trừ máy mạnh. Muốn biết nội dung trong file như thế nào thì nó sẽ như thế này:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/S4aGTfj.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Trong thư viện pandas, chúng ta sẽ mở file data bằng method &lt;strong&gt;read_csv()&lt;/strong&gt; của &lt;strong&gt;Pandas&lt;/strong&gt; và display nó ra. Ở đây mình sẽ display 10 dòng đầu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/HN8UP4N.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vì trong tập dữ liệu này chưa có tên các cột (tên feature ứng với mỗi cột) nên ta phải thêm parameter &lt;code class=&quot;highlighter-rouge&quot;&gt;header=None&lt;/code&gt;. Nếu không thêm vào, Pandas sẽ tự động lấy dòng đầu tiên làm tên column.&lt;/p&gt;
+
+&lt;p&gt;Việc cần làm tiếp theo là chúng ta sẽ thêm các tên feature vào để dễ đọc hơn, ta tiến hành mở file &lt;code class=&quot;highlighter-rouge&quot;&gt;kddcup.names.txt&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Nin3NOT.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Đây là một điểm lợi thế khi dùng jupyter. Bạn chỉ cần ghi tên variable ra thì nó sẽ hiện giá trị của variable khi được thực thi. Ở đây ta thấy nó một list bao gồm: dòng đầu tiên sẽ là tên các loại kết nối (có thể là tấn công hoặc bình thường). Các dòng còn lại sẽ là tên các feature và nó đã được sắp xếp theo đúng thứ tự. Việc cần làm bây giờ là tách nó ra, đưa nó về dạng dễ nhìn và thêm vào trong data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/KQeYGCn.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nhìn vào đoạn code trên, có thể một vài bạn mới sẽ không hiểu. Trong python có một thuật ngữ là &lt;a href=&quot;https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions&quot;&gt;List comprehension&lt;/a&gt;. Nó được sử dụng để tạo ra một list mới từ một iterables (ở đây là một list). Vì sử dụng method &lt;strong&gt;readlines()&lt;/strong&gt; nên giá trị trả về khi đọc file sẽ là một list như mình đã show ở biến names, và ở mình chỉ lấy giá trị từ vị trí 1 trở đi nên dùng list slicing &lt;strong&gt;[1:]&lt;/strong&gt;. Tiếp theo, mình chỉ muốn lấy tên của các feature chứ không lấy các râu ria như dấu &lt;strong&gt;:&lt;/strong&gt; hay các từ như &lt;strong&gt;&lt;em&gt;continuous&lt;/em&gt;&lt;/strong&gt; nên ta sẽ split chuỗi tại ký tự &lt;code class=&quot;highlighter-rouge&quot;&gt;:&lt;/code&gt; và lấy giá trị tên feature.&lt;/p&gt;
+
+&lt;p&gt;Nếu để ý, bạn sẽ thấy chỉ có 41 tên feature nhưng lại có 42 cột. Đúng vậy, cột cuối cùng là tên các loại kết nối, mình sẽ đặt cho nó là &lt;strong&gt;labels&lt;/strong&gt; và dùng parameters &lt;strong&gt;names&lt;/strong&gt; trong &lt;strong&gt;read_csv&lt;/strong&gt; để chèn thêm vào tên cột khi đọc file vào.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/GG4hmhT.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Như vậy là đã xong một phần nhỏ của việc xử lý data ban đầu. Mình xin kết thúc phần 1 tại đây. Trong phân 2, mình sẽ đi sâu vào việc phân tích, biến đổi data để sử dụng cho model Neural Network.&lt;/p&gt;
+
+&lt;p&gt;Thanks &amp;amp; Best Regrads!&lt;/p&gt;</content><author><name>CuongBeos</name></author><category term="tutorial" /><category term="MachineLearning" /><category term="analysis" /><summary type="html">1. Giới thiệu KDD Cup 1999 là tập dữ liệu được sử dụng cho cuộc thi The Third International Knowledge Discovery and Data Mining Tools. Nó chứa một bộ dữ liệu tiêu chuẩn để được kiểm toán, bao gồm các loại tấn công, xâm nhập khác nhau được mô phỏng trong môi trường mạng quân sự.</summary></entry><entry><title type="html">Practical Malware Analysis Lab 01</title><link href="https://hqcthunders.github.io/2019/04/07/Practical-Malware-Analysis.html" rel="alternate" type="text/html" title="Practical Malware Analysis Lab 01" /><published>2019-04-07T00:00:00+00:00</published><updated>2019-04-07T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/04/07/Practical-Malware-Analysis</id><content type="html" xml:base="https://hqcthunders.github.io/2019/04/07/Practical-Malware-Analysis.html">&lt;h2 id=&quot;i-giới-thiệu&quot;&gt;I. Giới thiệu&lt;/h2&gt;
+&lt;p&gt;Ở chương 1, cuốn sách Practical Malware Analysis sẽ nói về các kỹ thuật Basic Static Analysis và Basic Dynamic Analysis. Phần 1 thì mình sẽ tập trung chủ yếu vào Basic Static Analysis và thực hiện các bài lab 01.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/mikesiko/PracticalMalwareAnalysis-Labs&quot;&gt;Link tải lab&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ii-bài-tập&quot;&gt;II. Bài tập&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Lab 1-1&lt;/strong&gt;: Lab01-01.exe , Lab01-01.dll&lt;/p&gt;
+
+&lt;h4 id=&quot;1-upload-the-files-to-virustotal-and-view-the-reports-does-either-file-match-any-existing-antivirus-signatures&quot;&gt;&lt;strong&gt;1. Upload the files to VirusTotal and view the reports. Does either file match any existing antivirus signatures?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Chúng ta sẽ phải upload 2 file là &lt;strong&gt;Lab01-01.exe&lt;/strong&gt; và &lt;strong&gt;Lab01-01.dll&lt;/strong&gt; lên trang VirusTotal. Đây là 1 trang web chuyên kiểm tra các file có phải độc hại hay không bằng cách sử dụng các engines của các công ty phần mềm bảo mật như CMC, Bkav, Kaspersky, …
+Thông qua đó, chúng ta có thể biết được rằng file chúng ta upload có an toàn hay không, nếu không thì nó là malicious loại gì ? Hành vi của nó ra sao ? Và nhiều thông tin khác.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/IgNk8pc.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/YlXDOi9.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;2-when-were-these-files-compiled&quot;&gt;&lt;strong&gt;2. When were these files compiled?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Y7OnvC9.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/d89Ts4o.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Thông qua mục &lt;strong&gt;Details&lt;/strong&gt;, ta biết được thời gian mà 2 file được compile. Tại sao ta phải cần xem xét thông tin này ? Từ dữ kiện này, ta có thể phỏng đoán được 2 file cùng từ 1 gói mà ra, khoảng thời gian file &lt;strong&gt;exe&lt;/strong&gt; được compile sau đó là đến file &lt;strong&gt;.dll&lt;/strong&gt; rất gần nhau, điều đó có thể cho ta biết rằng file &lt;strong&gt;.exe&lt;/strong&gt; sẽ sử dụng hoặc cài đặt file &lt;strong&gt;.dll&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;3-are-there-any-indications-that-either-of-these-files-is-packed-or-obfuscated-if-so-what-are-these-indicators&quot;&gt;&lt;strong&gt;3. Are there any indications that either of these files is packed or obfuscated? If so, what are these indicators?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/8IJimzK.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/vK6YAJS.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;File Lab01-01.exe được compile bởi Microsoft Visual C++, và Lab01-01.dll được compile bởi Microsoft Visual C++ DLL, và 2 file này không &lt;strong&gt;packed&lt;/strong&gt; hoặc &lt;strong&gt;obfuscated&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;4-do-any-imports-hint-at-what-this-malware-does-if-so-which-imports-are-they&quot;&gt;&lt;strong&gt;4. Do any imports hint at what this malware does? If so, which imports are they?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/Uppdzj8.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/IFvL82r.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;5-are-there-any-other-files-or-host-based-indicators-that-you-could-look-for-on-infected-systems&quot;&gt;&lt;strong&gt;5. Are there any other files or host-based indicators that you could look for on infected systems?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/2rZ6rm1.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Có thể đường dẫn đến thưc mục Systems trong Windows: &lt;strong&gt;&lt;em&gt;C:\Windows\system32\kerne132.dll&lt;/em&gt;&lt;/strong&gt;. &lt;strong&gt;Kernel32.dll&lt;/strong&gt; là file xử lý việc sử dụng bộ nhớ trong Windows, đây là một trong những file rất quan trọng trong hệ thống. Ta nhìn thấy ở trên, file này được fake bằng file &lt;strong&gt;kerne132.dll&lt;/strong&gt;, chỉ cần 1 thay đổi nhỏ giữa chứ &lt;strong&gt;&lt;em&gt;l&lt;/em&gt;&lt;/strong&gt; và số &lt;strong&gt;&lt;em&gt;1&lt;/em&gt;&lt;/strong&gt; đã có thể đánh lừa người dùng. Đường dẫn này được xuất hiện ở khi phân tích file &lt;strong&gt;Lab01-01.exe&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;6what-network-based-indicators-could-be-used-to-find-this-malware-on-infected-machines&quot;&gt;&lt;strong&gt;6.What network-based indicators could be used to find this malware on infected machines?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Trong mục &lt;strong&gt;SECTION.DATA&lt;/strong&gt; của file Lab01-01.dll, ta có thể thấy được địa chỉ IP: &lt;strong&gt;127.26.152.13&lt;/strong&gt;,
+địa chỉ này có thể là địa chỉ của máy tấn công, thông tin sẽ được gửi đến đây. Thực tế, nó sẽ là một địa chỉ mạng ngoài chứ không phải là loal.&lt;/p&gt;
+
+&lt;h4 id=&quot;7what-would-you-guess-is-the-purpose-of-these-files&quot;&gt;&lt;strong&gt;7.What would you guess is the purpose of these files?&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Khi thực thi file &lt;strong&gt;Lab01-01.exe&lt;/strong&gt;, nó sẽ tiến hành sử dụng file &lt;strong&gt;Lab01-01.dll&lt;/strong&gt;. Trong file &lt;strong&gt;.dll&lt;/strong&gt;, có import các thư viện liên quan đến &lt;strong&gt;socket&lt;/strong&gt; : &lt;strong&gt;WS2_32.dll&lt;/strong&gt;. Kèm với dữ kiện ở câu 6, ta có thể suy đoán chương trình này sẽ tạo một socket trên máy nạn nhân kết nói kẻ tấn công, còn gọi là kiểu mã độc &lt;strong&gt;backdoor&lt;/strong&gt;, sau khi tạo kết nối xong, kẻ tân công có thể kiểm soát, lấy thông tin từ máy nạn nhân.&lt;/p&gt;
+
+&lt;h2 id=&quot;iii-kết-luận&quot;&gt;III. Kết luận&lt;/h2&gt;
+&lt;p&gt;Vì đây là lab khởi đầu nên ta chưa cần thiết phải đi sâu vào việc phân xem backdoor đó sẽ có những hoạt động gì ? Bài lab này chỉ là phần hướng dẫn mở đầu cho bạn đọc biết hướng phân tích như thế nào bằng cách trả lời các câu hỏi, ta có thể áp dụng phương pháp phân tích này cho các bài lab sau, rồi từ đó cải thiện kỹ năng phân tích của mình.&lt;/p&gt;
+
+&lt;p&gt;Thanks &amp;amp; Best regrads!&lt;/p&gt;</content><author><name>CuongBeos</name></author><category term="tutorial" /><category term="malware" /><category term="analysis" /><summary type="html">I. Giới thiệu Ở chương 1, cuốn sách Practical Malware Analysis sẽ nói về các kỹ thuật Basic Static Analysis và Basic Dynamic Analysis. Phần 1 thì mình sẽ tập trung chủ yếu vào Basic Static Analysis và thực hiện các bài lab 01.</summary></entry></feed>

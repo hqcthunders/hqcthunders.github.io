@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Phân tích dữ liệu KDD99 (P.1) | CuongBeos</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Phân tích dữ liệu KDD99 (P.1)" />
+<meta name="author" content="CuongBeos" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Phân tích dữ liệu KDD99 để sử dụng cho ML/DL" />
+<meta property="og:description" content="Phân tích dữ liệu KDD99 để sử dụng cho ML/DL" />
+<link rel="canonical" href="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html" />
+<meta property="og:url" content="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html" />
+<meta property="og:site_name" content="CuongBeos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-07T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Phân tích dữ liệu KDD99 để sử dụng cho ML/DL","author":{"@type":"Person","name":"CuongBeos"},"@type":"BlogPosting","url":"https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html","headline":"Phân tích dữ liệu KDD99 (P.1)","dateModified":"2019-06-07T00:00:00+00:00","datePublished":"2019-06-07T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/favicon.png" /><link type="application/atom+xml" rel="alternate" href="https://hqcthunders.github.io/feed.xml" title="CuongBeos" /><script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+</head>
+<body><div class="site-header">
+  <div class="wrapper">
+    <a class="site-title" rel="author" href="/">CuongBeos<b class="command_prompt"></b><b class="blinking_cursor">_</b></a>
+    <span class="social_links">
+        <a class="color-purple-hover" href="https://github.com/hqcthunders"><i class="fab fa-github-square"></i></a>
+
+    </span>
+  </div>
+</div>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="author-box">
+
+<img src="https://gravatar.com/avatar/58ff0f8b5d960e79637fedd5b078c860?s=256" class="author-avatar" />
+
+Don't have anything !
+
+</div>
+
+<div class="post">
+  <h1 class="post-title">Phân tích dữ liệu KDD99 (P.1)</h1>
+  
+  <div class="post-tags">
+      
+      <a class="tag" href="/tag/tutorial/">tutorial</a>
+      
+      <a class="tag" href="/tag/MachineLearning/">MachineLearning</a>
+      
+      <a class="tag" href="/tag/analysis/">analysis</a>
+      
+  </div>
+  
+  <div class="post-date">Published on 07 Jun 2019</div>
+  
+  <div class="post-description">Phân tích dữ liệu KDD99 để sử dụng cho ML/DL</div>
+  
+  <h2 id="1-giới-thiệu">1. Giới thiệu</h2>
+<p>KDD Cup 1999 là tập dữ liệu được sử dụng cho cuộc thi <strong><em>The Third International Knowledge Discovery and Data Mining Tools</em></strong>. Nó chứa một bộ dữ liệu tiêu chuẩn để được kiểm toán, bao gồm các loại tấn công, xâm nhập khác nhau được mô phỏng trong môi trường mạng quân sự.</p>
+
+<h2 id="2-thành-phần-dữ-liệu">2. Thành phần dữ liệu.</h2>
+
+<p>Có tổng cộng 9 file trên trang chủ, tùy thuộc vào khả năng phần cứng mà bạn có thể lựa chọn chúng. Dưới đây, mình sẽ note lại ý nghĩa của từng file và file nào bạn nên tải:</p>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup.names">kddcup.names</a> : Trong file này bao gồm 2 phần mà ta phải để ý đến:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    - Tên các class: các kiểu kết nối bình thường hoặc các kiểu tấn công, xâm nhập.
+    
+    - Tên của các feature.
+</code></pre></div></div>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data.gz">kddcup.data.gz</a> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    - Đây là tập dữ liệu chính mà ta cần xử lý. Nó sẽ được sử dụng cho việc huấn luyện các mô hình ML/DL. Gồm 41 cột và hơn 4 triệu dòng. Với các bạn máy yếu thì mình khuyên không nên xử lý trên file này.
+</code></pre></div></div>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup.data_10_percent.gz">kddcup.data_10_percent.gz</a> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Nó chỉ là 10% của file trên. Và đây là file mà các bạn nên sử dụng vì nó khá nhẹ, dễ dàng xử lý một cách nhanh chóng (về mặt thời gian).
+</code></pre></div></div>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup.testdata.unlabeled.gz">kddcup.testdata.unlabeled.gz</a> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Đã có train thì sẽ phải có test, thì đây là tập dữ liệu để kiểm tra xem model của bạn dự đoán như thế nào. Vì nó không hề có nhãn, nên ta không biết được là nó có chính xác không mà chỉ biết được nó sẽ được dự đoán ra những kiểu nào.
+</code></pre></div></div>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/kddcup.testdata.unlabeled_10_percent.gz">kddcup.testdata.unlabeled_10_percent.gz</a> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Tương tự file trên.
+</code></pre></div></div>
+
+<p><a href="http://kdd.ics.uci.edu/databases/kddcup99/corrected.gz">corrected.gz</a> :</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Tập này là 10% của tập test, nhưng nó có thêm cột class, nghĩa là đã được đánh nhãn để các bạn có thê kiểm tra xem model của mình dự đoán chính xác bao nhiêu %, từ đó đưa ra kết luận, chỉnh sửa và thay đổi đối với model.
+</code></pre></div></div>
+
+<ul>
+  <li>Mô tả thông tin của từng feature. Những thông tin sẽ có ích trong việc lựa chọn cách thức xử lý dữ liệu của chúng ta.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tên feature</th>
+      <th>Mô tả</th>
+      <th>Phân loại</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Duration</td>
+      <td>Độ dài của một kết nối</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>Protocol_type</td>
+      <td>Các loại giao thức như: tcp, udp, …</td>
+      <td>Discrete</td>
+    </tr>
+    <tr>
+      <td>Service</td>
+      <td>Các dịch vụ mạng: http, telnet, …</td>
+      <td>Discrete</td>
+    </tr>
+    <tr>
+      <td>src_bytes</td>
+      <td>Số byte data từ nguồn tới đích</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>dst_bytes</td>
+      <td>Số byte data từ đích tới nguồn continuous</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>flag</td>
+      <td>Trạng thái kết nối (bình thường hoặc lỗi)</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>land</td>
+      <td>1 nếu kết nối được thiết lập từ một host/port tương tự &lt;br &gt; 0 cho các trường hợp còn lại</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>wrong_fragment</td>
+      <td>Số fragment bị cảnh báo</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>urgent</td>
+      <td>Số gói tin urgent</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>hot</td>
+      <td>Số lượng chỉ số “hot”</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>num_failed_logins</td>
+      <td>Số kết nối thất bại</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>logged_in</td>
+      <td>1 nếu đăng nhập thành công <br /> 0 các trường hợp còn lại</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>num_compromised</td>
+      <td>Số lượng tình huống bị xâm phạm</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>root_shell</td>
+      <td>1 nếu thu được roo shell &lt;br &gt; 0 các trường hợp còn lại</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>su_attempted</td>
+      <td>1 nếu “su root” được thực hiện <br /> 0 cho các trường hợp còn lại</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>num_root</td>
+      <td>Số lượng truy cập root</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>num_file_creations</td>
+      <td>Số lượng tập tin được tạo ra</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>num_shells</td>
+      <td>Số lượng shell</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>num_access_files</td>
+      <td>Số các thao tác kiểm soát truy cập tệp tin</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>num_outbound_cmds</td>
+      <td>Số lượng các lệnh outbound trong một phiên ftp</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>is_hot_login</td>
+      <td>1 nếu thông tin đăng nhập thuộc danh sách “hot”. <br />0 cho các trường hợp còn lại</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>is_guest_login</td>
+      <td>1 nếu thông tin đăng nhập là khách <br /> 0 cho các trường hợp khác</td>
+      <td>discrete</td>
+    </tr>
+    <tr>
+      <td>count</td>
+      <td>Số lượng kết nối tới cùng một host cách kết nối hiện tại 2s</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>serror_rate</td>
+      <td>% các kết nối có lỗi SYN</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>rerror_rate</td>
+      <td>% các kết nối có lỗi “REJ”</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>same_srv_rate</td>
+      <td>% các kết nối đến cùng dịch vụ.</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>diff_srv_rate</td>
+      <td>% các kết nối tới các dịch vụ khác.</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>srv_count</td>
+      <td>Số lượng các kết nối tới cùng 1 dịch vụ so với kết nối hiện tại 2s</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>srv_serror_rate</td>
+      <td>% các kết nối dịch vụ lỗi “SYN”</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>srv_rerror_rate</td>
+      <td>% các kết nối dịch vụ lỗi “REJ”</td>
+      <td>continuous</td>
+    </tr>
+    <tr>
+      <td>srv_diff_host_rate</td>
+      <td>% các kết nối tới các host khác.</td>
+      <td>continuous</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="3-tạo-môi-trường-để-xử-lý-dữ-liệu">3. Tạo môi trường để xử lý dữ liệu.</h2>
+<ul>
+  <li>Ngôn ngữ sử dụng Python 3.x</li>
+  <li>Thư viện sử dụng: Numpy, Pandas, Jupyter Notebook.</li>
+</ul>
+
+<p>Lý do mà mình lựa chọn Python 3.x bởi vì nó là một ngôn ngữ dễ sử dụng, có nhiều module hỗ trợ trong nhiều lĩnh vực, đặc biệt là khoa học phân tích dữ liệu.</p>
+
+<p><strong><em>Numpy</em></strong> là một thư viện xử lý số học, trong bài này, mình sẽ xử dụng nó để tính toán Z-score (ý nghĩa mình sẽ giới thiệu trong mục tiếp theo).</p>
+
+<p>Tiếp theo là <strong><em>Pandas</em></strong>, đây là một thư viện hỗ trợ rất mạnh cho việc xử lý, thể hiện dữ liệu ở dạng bảng (như exel), giúp cho việc phân tính trở nên tường mình, dễ nhìn hơn.</p>
+
+<p><strong><em>Jupyter Notebook</em></strong>. Đây là một công cụ rất mạnh cho việc tạo môi trường Python phục vụ việc nghiên cứu. Nó được chạy trên nền Web, bạn có thể thực hiện các dòng lệnh 1 và biểu diễn chúng mà không cần compile cả file. Nó tương tự như việc bạn chạy lệnh python trên Terminal, tuy nhiên với Jupyter, nó sẽ lưu lại các câu lệnh, kết quả mà bạn làm, giúp cho việc tiếp tục công việc ở đợt sau thuận tiện hơn.</p>
+
+<p><strong>Note</strong>: Khi làm việc với Python, bạn nêu tạo một môi trường ảo được gọi là <strong>Virtualenv</strong> được hỗ trợ bởi python, sau khi truy cập vào môi trường ảo rồi thì mới cài đặt các module liên quan. Mỗi project thì nên sử dụng một Virtualenv để tránh việc xung đột giữa các phiên bản, đồng thời thử nghiệm được phiên bản mới của các module mà không ảnh hưởng đến phiên bản chính. Nên tập thói quen tạo ra một Virtualenv khi thực hiện các Project không liên quan tới nhau.</p>
+
+<h2 id="4-thể-hiện-dữ-liệu-với-pandas">4. Thể hiện dữ liệu với pandas.</h2>
+<p>Sau khi đã cài đặt môi trường cho Python xong, ta sẽ khởi động jupyter notebook bằng terminal và truy cập nó trên web.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">jupyter</span><span class="o">-</span><span class="n">lab</span> </code></pre></figure>
+
+<p>Bạn có thể thay đổi port truy cập cho nó bằng cách thêm <strong>–port</strong> và thêm số port muốn truy cập sau đó.</p>
+
+<p>Import thư viện pandas và xem thử nó được mô tả như nào nhé:</p>
+
+<p><img src="https://i.imgur.com/DjJGe9o.png" alt="Image" /></p>
+
+<p>À quên chưa nhắc, nếu các bạn có lỡ mở file data lên bằng notepad (trên windows) hay text  editor (trên linux) thì khả năng treo máy khá cao, trừ máy mạnh. Muốn biết nội dung trong file như thế nào thì nó sẽ như thế này:</p>
+
+<p><img src="https://i.imgur.com/S4aGTfj.png" alt="Image" /></p>
+
+<p>Trong thư viện pandas, chúng ta sẽ mở file data bằng method <strong>read_csv()</strong> của <strong>Pandas</strong> và display nó ra. Ở đây mình sẽ display 10 dòng đầu.</p>
+
+<p><img src="https://i.imgur.com/HN8UP4N.png" alt="Image" /></p>
+
+<p>Vì trong tập dữ liệu này chưa có tên các cột (tên feature ứng với mỗi cột) nên ta phải thêm parameter <code class="highlighter-rouge">header=None</code>. Nếu không thêm vào, Pandas sẽ tự động lấy dòng đầu tiên làm tên column.</p>
+
+<p>Việc cần làm tiếp theo là chúng ta sẽ thêm các tên feature vào để dễ đọc hơn, ta tiến hành mở file <code class="highlighter-rouge">kddcup.names.txt</code>.</p>
+
+<p><img src="https://i.imgur.com/Nin3NOT.png" alt="Image" /></p>
+
+<p>Đây là một điểm lợi thế khi dùng jupyter. Bạn chỉ cần ghi tên variable ra thì nó sẽ hiện giá trị của variable khi được thực thi. Ở đây ta thấy nó một list bao gồm: dòng đầu tiên sẽ là tên các loại kết nối (có thể là tấn công hoặc bình thường). Các dòng còn lại sẽ là tên các feature và nó đã được sắp xếp theo đúng thứ tự. Việc cần làm bây giờ là tách nó ra, đưa nó về dạng dễ nhìn và thêm vào trong data.</p>
+
+<p><img src="https://i.imgur.com/KQeYGCn.png" alt="Image" /></p>
+
+<p>Nhìn vào đoạn code trên, có thể một vài bạn mới sẽ không hiểu. Trong python có một thuật ngữ là <a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions">List comprehension</a>. Nó được sử dụng để tạo ra một list mới từ một iterables (ở đây là một list). Vì sử dụng method <strong>readlines()</strong> nên giá trị trả về khi đọc file sẽ là một list như mình đã show ở biến names, và ở mình chỉ lấy giá trị từ vị trí 1 trở đi nên dùng list slicing <strong>[1:]</strong>. Tiếp theo, mình chỉ muốn lấy tên của các feature chứ không lấy các râu ria như dấu <strong>:</strong> hay các từ như <strong><em>continuous</em></strong> nên ta sẽ split chuỗi tại ký tự <code class="highlighter-rouge">:</code> và lấy giá trị tên feature.</p>
+
+<p>Nếu để ý, bạn sẽ thấy chỉ có 41 tên feature nhưng lại có 42 cột. Đúng vậy, cột cuối cùng là tên các loại kết nối, mình sẽ đặt cho nó là <strong>labels</strong> và dùng parameters <strong>names</strong> trong <strong>read_csv</strong> để chèn thêm vào tên cột khi đọc file vào.</p>
+
+<p><img src="https://i.imgur.com/GG4hmhT.png" alt="Image" /></p>
+
+<p>Như vậy là đã xong một phần nhỏ của việc xử lý data ban đầu. Mình xin kết thúc phần 1 tại đây. Trong phân 2, mình sẽ đi sâu vào việc phân tích, biến đổi data để sử dụng cho model Neural Network.</p>
+
+<p>Thanks &amp; Best Regrads!</p>
+
+</div>
+
+
+<div class="comments">
+<div id="disqus_thread"></div>
+<script>
+ var disqus_config = function () {
+     this.page.url = 'https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html';
+     this.page.identifier = '/2019/06/07/Data-analysis-kdd99';
+     this.page.title = 'Phân tích dữ liệu KDD99 (P.1)';
+ };
+
+ (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+     var d = document, s = d.createElement('script');
+
+     s.src = '//https-hqcthunders-github-io.disqus.com/embed.js';
+
+     s.setAttribute('data-timestamp', +new Date());
+     (d.head || d.body).appendChild(s);
+ })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+
+
+
+<div class="related">
+  <h2>related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2019/04/07/Practical-Malware-Analysis.html">
+            Practical Malware Analysis Lab 01
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+  
+  <h2>all tags</h2>
+  <div class="tag-cloud"><a href="/tag/machinelearning/" class="set-1">MachineLearning</a> <a href="/tag/analysis/" class="set-5">analysis</a> <a href="/tag/malware/" class="set-1">malware</a> <a href="/tag/tutorial/" class="set-5">tutorial</a></div>
+  
+
+
+
+      </div>
+    </main><footer class="site-footer">
+  <div class="wrapper">
+    <div class="credits"><a href="https://github.com/bitbrain/jekyll-dash">dash</a> theme for Jekyll by <a href="https://github.com/bitbrain">bitbrain</a> made with <i class="fas fa-heart"></i></div>
+  </div>
+</footer>
+<script>
+      window.FontAwesomeConfig = {
+        searchPseudoElements: true
+      }
+    </script>
+  </body>
+
+</html>
