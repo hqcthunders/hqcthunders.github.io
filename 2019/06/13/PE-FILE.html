@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable | CuongBeos</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable" />
+<meta name="author" content="CuongBeos" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Bổ trợ kiến thức về PE File" />
+<meta property="og:description" content="Bổ trợ kiến thức về PE File" />
+<link rel="canonical" href="https://hqcthunders.github.io/2019/06/13/PE-FILE.html" />
+<meta property="og:url" content="https://hqcthunders.github.io/2019/06/13/PE-FILE.html" />
+<meta property="og:site_name" content="CuongBeos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-13T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Bổ trợ kiến thức về PE File","author":{"@type":"Person","name":"CuongBeos"},"@type":"BlogPosting","url":"https://hqcthunders.github.io/2019/06/13/PE-FILE.html","headline":"Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable","dateModified":"2019-06-13T00:00:00+00:00","datePublished":"2019-06-13T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://hqcthunders.github.io/2019/06/13/PE-FILE.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/png" href="/assets/favicon.png" /><link type="application/atom+xml" rel="alternate" href="https://hqcthunders.github.io/feed.xml" title="CuongBeos" /><script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+</head>
+<body><div class="site-header">
+  <div class="wrapper">
+    <a class="site-title" rel="author" href="/">CuongBeos<b class="command_prompt"></b><b class="blinking_cursor">_</b></a>
+    <span class="social_links">
+        <a class="color-purple-hover" href="https://github.com/hqcthunders"><i class="fab fa-github-square"></i></a>
+
+    </span>
+  </div>
+</div>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="author-box">
+
+<img src="https://gravatar.com/avatar/58ff0f8b5d960e79637fedd5b078c860?s=256" class="author-avatar" />
+
+"Thiên địa vạn vật vốn tương thông, cần gì cố chấp tại một vật, một đạo đâu"
+
+</div>
+
+<div class="post">
+  <h1 class="post-title">Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable</h1>
+  
+  <div class="post-tags">
+      
+      <a class="tag" href="/tag/tutorial/">tutorial</a>
+      
+      <a class="tag" href="/tag/malware/">malware</a>
+      
+      <a class="tag" href="/tag/analysis/">analysis</a>
+      
+  </div>
+  
+  <div class="post-date">Published on 13 Jun 2019</div>
+  
+  <div class="post-description">Bổ trợ kiến thức về PE File</div>
+  
+  <h2 id="1-pe-file-là-gì-">1. PE File là gì ?</h2>
+
+<p>Định dạng file Portable Executable là một kiểu định dạng được sử dụng trong Windows (x86, x64). Theo <a href="https://en.wikipedia.org/wiki/Portable_Executable">Wikipedia</a> thì định dạng PE là một định dạng file cho một tệp thực thi, object code, DLLs, FON, core dumps.</p>
+
+<p>Là một kiến trúc dữ liệu chứa những thông tin cần thiết cho trình tải của Windows để quản lý thực thi các mã được đóng gói.</p>
+
+<p>Trong hệ thống Windows NT thì PE được gọi là COFF.</p>
+
+<h2 id="2-kiến-trúc-cơ-bản">2. Kiến trúc cơ bản.</h2>
+
+<p><img src="https://i.imgur.com/SOxVDcH.jpg" alt="Image" /></p>
+
+<p>Một file thực thi PE thường có hai phần chính là Header và Section. Giờ chúng ta sẽ đi vào từng phần một để xem nó là gì và chức năng nó như thế nào.</p>
+
+<h3 id="21-dos-header">2.1 DOS Header</h3>
+
+<ul>
+  <li>Được bắt đầu với 64 bytes đầu tiên của mỗi file PE.</li>
+  <li>Trong môi trường DOS, file này sẽ được thực thi nếu tròng DOS Header được nhận dạng hợp lệ và có thể chạy nó trong chế độ DOS stub.</li>
+</ul>
+
+<p><img src="https://i.imgur.com/cbpGn7y.png" alt="Image" /></p>
+
+<p>Trong DOS Header, chúng ta sẽ chỉ tập trung vào 2 thành phần chính <code class="highlighter-rouge">e_magic</code> và <code class="highlighter-rouge">e_lfanew</code></p>
+
+<ul>
+  <li>
+    <p>e_magic: magic number, trường này đánh dấu một file hợp lệ và được thực thi, có gía trị là <code class="highlighter-rouge">0x54AD</code>. Bắt đầu tại offset 0</p>
+  </li>
+  <li>
+    <p>e_lfanew: là trường cuối trong DOS Header, chứa giá trị offset của PE Header. Windows loader tìm kiếm offset này và có thể bỏ qua DOS stub để tới PE Header.</p>
+  </li>
+</ul>
+
+<p><img src="https://i.imgur.com/vnqsD1b.png" alt="Image" /></p>
+
+<h3 id="22-pe-header">2.2 PE Header</h3>
+
+<p>Có cấu trúc gồm:</p>
+
+<p>Signature: Là chữ ký để Windows Loader nhận biết. (50 45 00 00)</p>
+
+<p>File Header:
+<img src="https://i.imgur.com/TnaI3aE.png" alt="Image" /></p>
+<ul>
+  <li>Machine: là một số dùng để xác định loại máy (intel hay AMD, …)</li>
+  <li>NumberOfSections: kích thước của section table.</li>
+  <li>SizeOfOptionalHeader: kích thước của option header được yêu cầu cho một file thực thi. Giá trị này nên bằng 0 đối với một file.</li>
+  <li>Characteristics: là cờ Characteristic chỉ ra thuộc tính của file đối tượng hoặc hình ảnh.</li>
+</ul>
+
+<p>Optional Header:</p>
+
+<p><img src="https://i.imgur.com/OhEn4M0.png" alt="Image" />
+<img src="https://i.imgur.com/fOLHNVB.png" alt="Image" /></p>
+
+
+</div>
+
+
+<div class="comments">
+<div id="disqus_thread"></div>
+<script>
+ var disqus_config = function () {
+     this.page.url = 'https://hqcthunders.github.io/2019/06/13/PE-FILE.html';
+     this.page.identifier = '/2019/06/13/PE-FILE';
+     this.page.title = 'Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable';
+ };
+
+ (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+     var d = document, s = d.createElement('script');
+
+     s.src = '//https-hqcthunders-github-io.disqus.com/embed.js';
+
+     s.setAttribute('data-timestamp', +new Date());
+     (d.head || d.body).appendChild(s);
+ })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+</div>
+
+
+
+
+<div class="related">
+  <h2>related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2019/06/07/Data-analysis-kdd99.html">
+            Phân tích dữ liệu KDD99 (P.1)
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2019/04/07/Practical-Malware-Analysis.html">
+            Practical Malware Analysis Lab 01
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+  
+  <h2>all tags</h2>
+  <div class="tag-cloud"><a href="/tag/machinelearning/" class="set-1">MachineLearning</a> <a href="/tag/analysis/" class="set-5">analysis</a> <a href="/tag/malware/" class="set-3">malware</a> <a href="/tag/tutorial/" class="set-5">tutorial</a></div>
+  
+
+
+
+      </div>
+    </main><footer class="site-footer">
+  <div class="wrapper">
+    <div class="credits"><a href="https://github.com/bitbrain/jekyll-dash">dash</a> theme for Jekyll by <a href="https://github.com/bitbrain">bitbrain</a> made with <i class="fas fa-heart"></i></div>
+  </div>
+</footer>
+<script>
+      window.FontAwesomeConfig = {
+        searchPseudoElements: true
+      }
+    </script>
+  </body>
+
+</html>

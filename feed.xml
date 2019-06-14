@@ -1,5 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://hqcthunders.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hqcthunders.github.io/" rel="alternate" type="text/html" /><updated>2019-06-14T04:55:39+00:00</updated><id>https://hqcthunders.github.io/feed.xml</id><title type="html">CuongBeos</title><subtitle>&quot;Thiên địa vạn vật vốn tương thông, cần gì cố chấp tại một vật, một đạo đâu&quot;
-</subtitle><author><name>CuongBeos</name></author><entry><title type="html">Phân tích dữ liệu KDD99 (P.1)</title><link href="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html" rel="alternate" type="text/html" title="Phân tích dữ liệu KDD99 (P.1)" /><published>2019-06-07T00:00:00+00:00</published><updated>2019-06-07T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html">&lt;h2 id=&quot;1-giới-thiệu&quot;&gt;1. Giới thiệu&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://hqcthunders.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hqcthunders.github.io/" rel="alternate" type="text/html" /><updated>2019-06-14T08:41:01+00:00</updated><id>https://hqcthunders.github.io/feed.xml</id><title type="html">CuongBeos</title><subtitle>&quot;Thiên địa vạn vật vốn tương thông, cần gì cố chấp tại một vật, một đạo đâu&quot;
+</subtitle><author><name>CuongBeos</name></author><entry><title type="html">Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable</title><link href="https://hqcthunders.github.io/2019/06/13/PE-FILE.html" rel="alternate" type="text/html" title="Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable" /><published>2019-06-13T00:00:00+00:00</published><updated>2019-06-13T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/13/PE-FILE</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/13/PE-FILE.html">&lt;h2 id=&quot;1-pe-file-là-gì-&quot;&gt;1. PE File là gì ?&lt;/h2&gt;
+
+&lt;p&gt;Định dạng file Portable Executable là một kiểu định dạng được sử dụng trong Windows (x86, x64). Theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Portable_Executable&quot;&gt;Wikipedia&lt;/a&gt; thì định dạng PE là một định dạng file cho một tệp thực thi, object code, DLLs, FON, core dumps.&lt;/p&gt;
+
+&lt;p&gt;Là một kiến trúc dữ liệu chứa những thông tin cần thiết cho trình tải của Windows để quản lý thực thi các mã được đóng gói.&lt;/p&gt;
+
+&lt;p&gt;Trong hệ thống Windows NT thì PE được gọi là COFF.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-kiến-trúc-cơ-bản&quot;&gt;2. Kiến trúc cơ bản.&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/SOxVDcH.jpg&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Một file thực thi PE thường có hai phần chính là Header và Section. Giờ chúng ta sẽ đi vào từng phần một để xem nó là gì và chức năng nó như thế nào.&lt;/p&gt;
+
+&lt;h3 id=&quot;21-dos-header&quot;&gt;2.1 DOS Header&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Được bắt đầu với 64 bytes đầu tiên của mỗi file PE.&lt;/li&gt;
+  &lt;li&gt;Trong môi trường DOS, file này sẽ được thực thi nếu tròng DOS Header được nhận dạng hợp lệ và có thể chạy nó trong chế độ DOS stub.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/cbpGn7y.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Trong DOS Header, chúng ta sẽ chỉ tập trung vào 2 thành phần chính &lt;code class=&quot;highlighter-rouge&quot;&gt;e_magic&lt;/code&gt; và &lt;code class=&quot;highlighter-rouge&quot;&gt;e_lfanew&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;e_magic: magic number, trường này đánh dấu một file hợp lệ và được thực thi, có gía trị là &lt;code class=&quot;highlighter-rouge&quot;&gt;0x54AD&lt;/code&gt;. Bắt đầu tại offset 0&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;e_lfanew: là trường cuối trong DOS Header, chứa giá trị offset của PE Header. Windows loader tìm kiếm offset này và có thể bỏ qua DOS stub để tới PE Header.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/vnqsD1b.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;22-pe-header&quot;&gt;2.2 PE Header&lt;/h3&gt;
+
+&lt;p&gt;Có cấu trúc gồm:&lt;/p&gt;
+
+&lt;p&gt;Signature: Là chữ ký để Windows Loader nhận biết. (50 45 00 00)&lt;/p&gt;
+
+&lt;p&gt;File Header:
+&lt;img src=&quot;https://i.imgur.com/TnaI3aE.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Machine: là một số dùng để xác định loại máy (intel hay AMD, …)&lt;/li&gt;
+  &lt;li&gt;NumberOfSections: kích thước của section table.&lt;/li&gt;
+  &lt;li&gt;SizeOfOptionalHeader: kích thước của option header được yêu cầu cho một file thực thi. Giá trị này nên bằng 0 đối với một file.&lt;/li&gt;
+  &lt;li&gt;Characteristics: là cờ Characteristic chỉ ra thuộc tính của file đối tượng hoặc hình ảnh.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Optional Header:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/OhEn4M0.png&quot; alt=&quot;Image&quot; /&gt;
+&lt;img src=&quot;https://i.imgur.com/fOLHNVB.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;</content><author><name>CuongBeos</name></author><category term="tutorial" /><category term="malware" /><category term="analysis" /><summary type="html">1. PE File là gì ?</summary></entry><entry><title type="html">Phân tích dữ liệu KDD99 (P.1)</title><link href="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html" rel="alternate" type="text/html" title="Phân tích dữ liệu KDD99 (P.1)" /><published>2019-06-07T00:00:00+00:00</published><updated>2019-06-07T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/07/Data-analysis-kdd99.html">&lt;h2 id=&quot;1-giới-thiệu&quot;&gt;1. Giới thiệu&lt;/h2&gt;
 &lt;p&gt;KDD Cup 1999 là tập dữ liệu được sử dụng cho cuộc thi &lt;strong&gt;&lt;em&gt;The Third International Knowledge Discovery and Data Mining Tools&lt;/em&gt;&lt;/strong&gt;. Nó chứa một bộ dữ liệu tiêu chuẩn để được kiểm toán, bao gồm các loại tấn công, xâm nhập khác nhau được mô phỏng trong môi trường mạng quân sự.&lt;/p&gt;
 
 &lt;h2 id=&quot;2-thành-phần-dữ-liệu&quot;&gt;2. Thành phần dữ liệu.&lt;/h2&gt;
