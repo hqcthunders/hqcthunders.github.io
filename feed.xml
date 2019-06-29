@@ -1,5 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://hqcthunders.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hqcthunders.github.io/" rel="alternate" type="text/html" /><updated>2019-06-29T05:05:35+00:00</updated><id>https://hqcthunders.github.io/feed.xml</id><title type="html">CuongBeos</title><subtitle>&quot;Thiên địa vạn vật vốn tương thông, cần gì cố chấp tại một vật, một đạo đâu&quot;
-</subtitle><author><name>CuongBeos</name></author><entry><title type="html">Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable</title><link href="https://hqcthunders.github.io/2019/06/13/PE-FILE.html" rel="alternate" type="text/html" title="Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable" /><published>2019-06-13T00:00:00+00:00</published><updated>2019-06-13T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/13/PE-FILE</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/13/PE-FILE.html">&lt;h2 id=&quot;1-pe-file-là-gì-&quot;&gt;1. PE File là gì ?&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://hqcthunders.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hqcthunders.github.io/" rel="alternate" type="text/html" /><updated>2019-06-29T11:39:38+00:00</updated><id>https://hqcthunders.github.io/feed.xml</id><title type="html">CuongBeos</title><subtitle>&quot;Thiên địa vạn vật vốn tương thông, cần gì cố chấp tại một vật, một đạo đâu&quot;
+</subtitle><author><name>CuongBeos</name></author><entry><title type="html">Phân tích dữ liệu KDD99 (P.2)</title><link href="https://hqcthunders.github.io/2019/06/28/Data-analysis-kdd99-Part2.html" rel="alternate" type="text/html" title="Phân tích dữ liệu KDD99 (P.2)" /><published>2019-06-28T00:00:00+00:00</published><updated>2019-06-28T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/28/Data-analysis-kdd99-Part2</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/28/Data-analysis-kdd99-Part2.html">&lt;h1 id=&quot;1-phân-tích-dữ-liệu&quot;&gt;1. Phân tích dữ liệu&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/0yd79P5.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Để có thể đưa dữ liệu vào mô hình, đầu tiên ta cần phải chuẩn hóa dữ liệu, đưa dữ liệu &lt;strong&gt;string&lt;/strong&gt; về dạng số, có thể thực hiện vài thao tác để đưa dữ liệu số về loại chuẩn hơn và các giá trị đó sẽ nằm trong khoảng [0, 1]&lt;/p&gt;
+
+&lt;p&gt;Ở hình trên, những dữ liệu kiểu &lt;strong&gt;strings&lt;/strong&gt; cần chuẩn hóa là cột : &lt;code class=&quot;highlighter-rouge&quot;&gt;Protocol Type, Service, Flag&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;11-chuẩn-hóa-dữ-liệu-strings&quot;&gt;1.1 Chuẩn hóa dữ liệu strings&lt;/h2&gt;
+
+&lt;p&gt;Có rất nhiều phương pháp để chuẩn hóa &lt;strong&gt;string&lt;/strong&gt;, cách đơn giản nhất là chuyển chúng về 0 hoặc 1. Giả sử mình có một 2 cột là Bánh_kẹo và Thức_uống, giá trị của 2 cột đó là sở thích của mỗi member:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Member&lt;/th&gt;
+      &lt;th&gt;Bánh_kẹo&lt;/th&gt;
+      &lt;th&gt;Thức_Uống&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cường&lt;/td&gt;
+      &lt;td&gt;Gateaux&lt;/td&gt;
+      &lt;td&gt;Coca&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Hoàng&lt;/td&gt;
+      &lt;td&gt;Crepe&lt;/td&gt;
+      &lt;td&gt;Coffee&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Khi ta chuẩn hóa, ta sẽ thay đổi các cột. Những loại sản phẩm nào member đó thích thì ta để số 1, không thích thì để số 0, như vậy ta thay đổi như sau:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Member&lt;/th&gt;
+      &lt;th&gt;Bánh_kẹo_Gateaux&lt;/th&gt;
+      &lt;th&gt;Bánh_kẹo_Crepe&lt;/th&gt;
+      &lt;th&gt;Thức_Uống_Coca&lt;/th&gt;
+      &lt;th&gt;Thức_Uống_Coffee&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cường&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Hoàng&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Với cách làm như vậy, ta có thể chuẩn hóa các cột &lt;code class=&quot;highlighter-rouge&quot;&gt;Protocol Type, Service, Flag&lt;/code&gt; thành:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/X8C7oNM.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mình sẽ sử dụng hàm &lt;strong&gt;get_dummies(dataFrame, prefix)&lt;/strong&gt; của Pandas. Việc này tuy sẽ làm tăng kích thước của tập dữ liệu nhưng đồng thời lượng thông tin cho từng nhãn sẽ được tăng lên, làm tập dữ liệu tốt hơn để giúp training sau này.&lt;/p&gt;
+
+&lt;h2 id=&quot;12-phân-tích-dữ-liệu-số&quot;&gt;1.2 Phân tích dữ liệu số.&lt;/h2&gt;
+&lt;h3 id=&quot;z-score&quot;&gt;Z-Score&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Z-score là số độ lệch chuẩn của một giá trị x cho trước với giá trị trung bình μ.&lt;/li&gt;
+  &lt;li&gt;Nó thường được sử dụng cho quá trình chuẩn hóa dữ liệu.&lt;/li&gt;
+  &lt;li&gt;Công thức như sau:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;z = \frac{x - \mu }{\sigma }&lt;/p&gt;
+
+&lt;p&gt;Vì chi giá trị này, bạn có thể tham khảo tại (Đây)[https://mathbitsnotebook.com/Algebra2/Statistics/STzScores.html]&lt;/p&gt;
+
+&lt;p&gt;Chúng ta sẽ chuyển đổi các cột chứa giá trị số  về các giá trị z-score theo công thức trên. Ở đây mình sẽ làm ví dụ trên 2 cột &lt;strong&gt;src_bytes&lt;/strong&gt; và &lt;strong&gt;dst_bytes&lt;/strong&gt; :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/eXQUwbS.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;2-làm-mới-dữ-liệu&quot;&gt;2. Làm mới dữ liệu&lt;/h1&gt;
+
+&lt;p&gt;Sau khi phân tích dữ liệu, ta tiến hành thực hiện các việc cần làm để tạo ra một dữ liệu mới và sử dụng nó để training. Dữ liệu sau khi làm mới như sau:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/FMcBcSF.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sau khi xử lý, mình đã thu được dữ liệu mới có kích thước là 4898431 dòng và 126 cột. Phần class sẽ được tách riêng thành một dữ liệu riêng để đưa vào mô hình training.&lt;/p&gt;
+
+&lt;h1 id=&quot;3-training-cho-mô-hình-neural-network&quot;&gt;3. Training cho mô hình neural network&lt;/h1&gt;
+
+&lt;p&gt;Mình sẽ sử dụng dữ liệu vừa làm mới để training cho mô hình neural network đơn giản. Để tạo được mô hình, mình sẽ sử dụng công cụ tensorflow với API là Keras để tạo mô hình. Chúng ta có thể hoàn toàn tự thiết kế các thuật toán, xây dựng model với phần core của tensorflow low level, nhưng ở đây mình sẽ lựa chọn high level là Keras để việc thiết kế mô hình sẽ đơn giản hơn.&lt;/p&gt;
+
+&lt;p&gt;Cấu trúc mô hình mình thử nghiệm là như sau:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/GbMMW4N.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Quá trình training kết quả thu được khá là tốt, khoảng 0.99 cho validation accuracy và 0.01 validation loss. Tuy nhiên, khi đưa vào predict thực tế thì kết quả không tốt cho lắm với test dataset.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/8wFo5bV.png&quot; alt=&quot;Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Có 1 lý do để giải thích cho chuyện này đó là các nhãn lạ, nghĩa là sẽ không có các nhãn đã được training mà là hoàn toàn mới. Ví thế, model sẽ nhận dạng nó với nhãn nào gần nhất và đưa ra giá trị đó. Với bài toàn Unknown này, mình sẽ viết nó vào bài tiếp theo.&lt;/p&gt;</content><author><name>CuongBeos</name></author><category term="tutorial" /><category term="MachineLearning" /><category term="analysis" /><summary type="html">1. Phân tích dữ liệu</summary></entry><entry><title type="html">Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable</title><link href="https://hqcthunders.github.io/2019/06/13/PE-FILE.html" rel="alternate" type="text/html" title="Tìm hiểu về cấu trúc, chức năng của định dạng file Portable Executable" /><published>2019-06-13T00:00:00+00:00</published><updated>2019-06-13T00:00:00+00:00</updated><id>https://hqcthunders.github.io/2019/06/13/PE-FILE</id><content type="html" xml:base="https://hqcthunders.github.io/2019/06/13/PE-FILE.html">&lt;h2 id=&quot;1-pe-file-là-gì-&quot;&gt;1. PE File là gì ?&lt;/h2&gt;
 
 &lt;p&gt;Định dạng file Portable Executable là một kiểu định dạng được sử dụng trong Windows (x86, x64). Theo &lt;a href=&quot;https://en.wikipedia.org/wiki/Portable_Executable&quot;&gt;Wikipedia&lt;/a&gt; thì định dạng PE là một định dạng file cho một tệp thực thi, object code, DLLs, FON, core dumps.&lt;/p&gt;
 
